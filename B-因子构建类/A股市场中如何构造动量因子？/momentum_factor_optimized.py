@@ -230,18 +230,23 @@ class FactorAnalyzer:
         }
 
 
-def main_analysis(start_date: str = '2020-01-01', end_date: str = '2023-12-31', 
+def main_analysis(start_date: str = '2020-01-01', end_date: str = '2023-12-31',
                  max_stocks: int = 50):
     """主要分析流程"""
-    
+
     print("=== A股动量因子构造分析（优化版）===")
     print(f"分析期间: {start_date} 至 {end_date}")
     print(f"最大股票数量: {max_stocks}")
-    
+
     # 1. 获取数据
     print("\n1. 获取基础数据...")
-    data_provider = DataProvider()
-    stock_list = data_provider.get_stock_list(max_stocks)
+    try:
+        data_provider = DataProvider()
+        stock_list = data_provider.get_stock_list(max_stocks)
+    except Exception as e:
+        print(f"初始化数据提供者失败: {e}")
+        print("请检查tushare token是否正确配置")
+        return None
     
     if not stock_list:
         print("未获取到股票列表，程序退出")
